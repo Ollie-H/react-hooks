@@ -1,28 +1,19 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import UseGetApiData from "./Hooks/UseGetApiData";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () => {
+  const b = UseGetApiData({
+    url: "https://hn.algolia.com/api/v1/search?query=1",
+    initialData: {}
+  });
+
+  return (
+    <div>
+      <h1 onClick={() => b.performGet()}>GET DATA</h1>
+      {b.isLoading && "LOADING!"}
+      {!b.isLoading && b.data && JSON.stringify(b.data)}
+    </div>
+  );
+};
 
 export default App;
