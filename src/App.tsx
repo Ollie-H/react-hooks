@@ -1,5 +1,5 @@
 import React from "react";
-import UseGetApiData from "./Hooks/UseGetApiData";
+import UseGetApiData from "./Hooks/UseReadApiData";
 
 const App = () => {
   const b = UseGetApiData({

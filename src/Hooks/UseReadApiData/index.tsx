@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export interface UseApiDataProps<T = any> {
+export interface UseReadApiDataProps<T = any> {
   url: string;
   initialData: Partial<T>;
   mapDataToModel?: (serverData: any) => T;
 }
 
-interface UseApiDataState<T = any> {
+interface UseReadApiDataState<T = any> {
   data: T;
   isLoading: boolean;
   isError: boolean;
@@ -15,7 +15,9 @@ interface UseApiDataState<T = any> {
   performGet: () => void;
 }
 
-function useApiData<T = any>(props: UseApiDataProps<T>): UseApiDataState<T> {
+function useReadApiData<T = any>(
+  props: UseReadApiDataProps<T>
+): UseReadApiDataState<T> {
   const [data, setData] = useState(props.initialData as T);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -58,4 +60,4 @@ function useApiData<T = any>(props: UseApiDataProps<T>): UseApiDataState<T> {
   };
 }
 
-export default useApiData;
+export default useReadApiData;

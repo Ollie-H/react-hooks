@@ -1,5 +1,5 @@
 import { act, testHook } from "react-testing-library";
-import useGetApiData, { UseApiDataProps } from "../";
+import useReadApiData, { UseReadApiDataProps } from "../";
 import axios from "axios";
 import { flushPromises } from "../../../test.helpers";
 
@@ -8,7 +8,7 @@ jest.mock("axios");
 const MOCK_URL = "url";
 const MOCK_RESPONSE = { data: { a: 1 } };
 
-const useGetApiDataProps: UseApiDataProps = {
+const useReadApiDataProps: UseReadApiDataProps = {
   url: MOCK_URL,
   initialData: {},
   mapDataToModel: jest.fn(res => res)
@@ -28,8 +28,8 @@ describe("useCounter", () => {
   it("Should handle valid data correctly", async () => {
     testHook(
       () =>
-        ({ data, isLoading, isError, performGet } = useGetApiData(
-          useGetApiDataProps
+        ({ data, isLoading, isError, performGet } = useReadApiData(
+          useReadApiDataProps
         ))
     );
     expect(axios.get).toBeCalledWith(MOCK_URL);
@@ -46,8 +46,8 @@ describe("useCounter", () => {
   it("Should refetch data when called", async () => {
     testHook(
       () =>
-        ({ data, isLoading, isError, performGet } = useGetApiData(
-          useGetApiDataProps
+        ({ data, isLoading, isError, performGet } = useReadApiData(
+          useReadApiDataProps
         ))
     );
     expect(data).toEqual({});
@@ -63,9 +63,13 @@ describe("useCounter", () => {
     (axios.get as jest.Mock).mockRejectedValue(new Error("An error occurred"));
     testHook(
       () =>
-        ({ data, isLoading, isError, performGet, errorMessage } = useGetApiData(
-          useGetApiDataProps
-        ))
+        ({
+          data,
+          isLoading,
+          isError,
+          performGet,
+          errorMessage
+        } = useReadApiData(useReadApiDataProps))
     );
     await flushPromises();
     expect(isLoading).toEqual(false);
