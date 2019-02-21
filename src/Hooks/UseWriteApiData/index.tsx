@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import * as y from "yup";
 import { ValidationError, ObjectSchema } from "yup";
 
 interface ValidationErrors<T extends object = object> {
