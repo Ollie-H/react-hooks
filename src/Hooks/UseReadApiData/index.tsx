@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { formatOrganisationUrl } from "../../Utils";
 
 export interface UseReadApiDataProps<T = any> {
-  url: string;
+  url?: string;
   initialData: Partial<T>;
   mapDataToModel?: (serverData: any) => T;
 }
@@ -13,6 +14,7 @@ interface UseReadApiDataState<T = any> {
   isError: boolean;
   errorMessage?: string;
   performGet: () => void;
+  performSetUrl: (url: string) => void;
 }
 
 function useReadApiData<T = any>(
@@ -22,14 +24,19 @@ function useReadApiData<T = any>(
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [url, setUrl] = useState(props.url);
 
   const fetchData = async () => {
+    if (!props.url) {
+      return;
+    }
     setIsError(false);
     setIsLoading(true);
     setErrorMessage(undefined);
 
     try {
-      const result = await axios.get(props.url);
+      const formattedUrl = formatOrganisationUrl(props.url);
+      const result = await axios.get(formattedUrl);
       setIsError(false);
       if (props.mapDataToModel) {
         setData(props.mapDataToModel(result.data));
@@ -47,16 +54,21 @@ function useReadApiData<T = any>(
     fetchData();
   };
 
+  const performSetUrl = (url: string) => {
+    setUrl(url);
+  };
+
   useEffect(() => {
     fetchData();
-  }, [props.url]);
+  }, [url]);
 
   return {
     errorMessage,
     data,
     isLoading,
     isError,
-    performGet
+    performGet,
+    performSetUrl
   };
 }
 

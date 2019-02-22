@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ValidationError, ObjectSchema } from "yup";
+import { formatOrganisationUrl } from "../../Utils";
 
 interface ValidationErrors<T extends object = object> {
   (key: keyof T): ValidationError;
@@ -47,7 +48,12 @@ function useWriteApiData<T extends object = object>(
         abortEarly: false
       });
       try {
-        await props.httpAction(props.url, formattedData);
+        const formattedUrl = formatOrganisationUrl(props.url);
+        await props.httpAction(formattedUrl, formattedData, {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest"
+          }
+        });
         setIsError(false);
         setSuccess(true);
         setIsLoading(false);
