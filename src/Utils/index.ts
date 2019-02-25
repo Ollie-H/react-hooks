@@ -1,6 +1,6 @@
-import { getUserData } from "../Models/Users/utils";
+import { getUserData, getOrganisationId } from "../Models/Users/utils";
 
-export const toFormData = (formData: {}): FormData => {
+export const toFormData = (formData: any): FormData => {
   const data = new FormData();
   Object.keys(formData).map(key => data.append(key, formData[key]));
   return data;
@@ -34,3 +34,10 @@ export const getAuthBearer = (): {} => {
     return {};
   }
 };
+
+export const addOrganisationToPayload = <T>(
+  data: T
+): T & { organisation: number } =>
+  Object.assign({}, data, {
+    organisation: getOrganisationId()
+  });

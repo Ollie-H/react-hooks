@@ -1,4 +1,9 @@
-import { toFormData, formatOrganisationUrl, getAuthBearer } from "../";
+import {
+  toFormData,
+  formatOrganisationUrl,
+  getAuthBearer,
+  addOrganisationToPayload
+} from "../";
 import { getUserData } from "../../Models/Users/utils";
 jest.mock("../../Models/Users/utils");
 
@@ -50,6 +55,21 @@ describe("getAuthBearer", () => {
     const headers = getAuthBearer();
     expect(headers).toEqual({
       Authorization: "sss"
+    });
+  });
+});
+
+describe("addOrganisationToPayload", () => {
+  beforeAll(() => {
+    (getUserData as jest.Mock).mockReturnValue({
+      organisation: 1
+    });
+  });
+
+  it("Should add org id", () => {
+    expect(addOrganisationToPayload({ s: 1 })).toEqual({
+      s: 1,
+      organisation: 1
     });
   });
 });

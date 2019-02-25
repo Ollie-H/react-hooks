@@ -30,7 +30,7 @@ export interface UserInput {
   accessToken: string | null;
   refreshToken: string | null;
   password?: string;
-  profile_image?: File;
+  profile_image: File;
 }
 
 export interface User2Fa {

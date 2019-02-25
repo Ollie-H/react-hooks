@@ -44,6 +44,7 @@ function useReadApiData<T = any>(
         setData(result.data);
       }
     } catch (error) {
+      console.log(error);
       setIsError(true);
       setErrorMessage(error.message);
     }

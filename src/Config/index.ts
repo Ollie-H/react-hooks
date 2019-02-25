@@ -1,4 +1,4 @@
-const DEFAULT_SETTINGS = {
+const DEFAULT_SETTINGS: { [key: string]: any } = {
   API_BASE_URL: "http://" + window.location.hostname + ":8000/api",
   CLIENT_ID: "YT4C4rofi8wRdLIEBCsucLLxFcJlnDiyPgPEp1al",
   AUTH_LOCAL_STORAGE: "auth_user"

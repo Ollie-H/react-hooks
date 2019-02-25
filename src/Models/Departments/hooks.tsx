@@ -5,7 +5,6 @@ import useWriteApiData from "../../Hooks/UseWriteApiData";
 import axios from "axios";
 import { addOrganisationToPayload } from "../../Utils";
 
-// Departments
 export const useGetDepartments = () => {
   const url = `${getEnvironmentConfigItem(
     "API_BASE_URL"

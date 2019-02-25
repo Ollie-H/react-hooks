@@ -1,4 +1,4 @@
-import { User, UserInput } from "./types";
+import { UserInput } from "./types";
 import { toFormData } from "../../Utils";
 
 export const mapUserWriteUpdate = (userForm: UserInput): FormData => {

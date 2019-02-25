@@ -44,9 +44,17 @@ function useWriteApiData<T extends object = object>(
     let formattedData = data;
 
     try {
-      formattedData = await props.validations.validate(formattedData, {
-        abortEarly: false
-      });
+      if (!props.url) {
+        return;
+      }
+      if (props.validations) {
+        await props.validations.validate(formattedData, {
+          abortEarly: false
+        });
+      }
+      if (props.mapDataToModel) {
+        formattedData = props.mapDataToModel(formattedData as T);
+      }
       try {
         const formattedUrl = formatOrganisationUrl(props.url);
         await props.httpAction(formattedUrl, formattedData, {

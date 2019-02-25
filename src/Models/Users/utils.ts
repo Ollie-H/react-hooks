@@ -3,9 +3,10 @@ import { getEnvironmentConfigItem } from "../../Config";
 
 export const getUserData = (): CurrentUserLocalStorage | undefined => {
   try {
-    const userData = window.localStorage.getItem(
-      getEnvironmentConfigItem("AUTH_LOCAL_STORAGE")
-    );
+    const userData =
+      window.localStorage.getItem(
+        getEnvironmentConfigItem("AUTH_LOCAL_STORAGE")
+      ) || "";
     return JSON.parse(userData);
   } catch (e) {
     return undefined;
@@ -21,7 +22,7 @@ export const removeUserData = (): void => {
 };
 
 export const setUserData = (
-  currentUserLocalStorage: CurrentUserLocalStorage
+  currentUserLocalStorage: Partial<CurrentUserLocalStorage>
 ): void => {
   try {
     window.localStorage.setItem(
@@ -36,5 +37,6 @@ export const getOrganisationId = () => {
   if (!authData || !authData.organisation) {
     throw new Error("User has no organisation defined.");
   }
+  console.log(authData);
   return authData.organisation.organisation;
 };

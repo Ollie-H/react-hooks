@@ -1,8 +1,8 @@
 import { act, testHook } from "react-testing-library";
 import * as hooks from "../hooks";
 import axios from "axios";
-import projectItemInputMock from "../__mocks__/item-input.mock";
-import projecItemtMock from "../__mocks__/item.mock";
+import depInputMock from "../__mocks__/department-input.mock";
+import depMock from "../__mocks__/department.mock";
 import { getUserData } from "../../../Models/Users/utils";
 import { flushPromises } from "../../../test.helpers";
 
@@ -24,53 +24,41 @@ describe("User hooks", () => {
     (axios.post as jest.Mock).mockReset();
   });
 
-  it("useGetProjects", async () => {
+  it("useGetUsers", async () => {
     let data;
     (axios.get as jest.Mock).mockResolvedValue({
-      data: [projecItemtMock]
+      data: [depMock]
     });
-    testHook(() => ({ data } = hooks.useGetProjectItems(1)));
+    testHook(() => ({ data } = hooks.useGetDepartments()));
     await flushPromises();
     expect(axios.get).toBeCalledWith(
-      "http://localhost:8000/api/organisations/1/projects/1/items"
+      "http://localhost:8000/api/organisations/1/departments"
     );
-    expect(data).toEqual([projecItemtMock]);
+    expect(data).toEqual([depMock]);
   });
 
   it("useCreateDepartment", async () => {
     let setData, errors;
-    testHook(() => ({ setData, errors } = hooks.useCreateProjectItem(1)));
+    testHook(() => ({ setData, errors } = hooks.useCreateDepartment()));
     await flushPromises();
-    act(() => setData(projectItemInputMock));
+    act(() => setData(depInputMock));
     await flushPromises();
     expect(axios.post).toBeCalledWith(
-      "http://localhost:8000/api/organisations/1/projects/1/items",
-      {
-        ...projectItemInputMock,
-        active: true,
-        project: 1,
-        // TODO: mock not playing well
-        organisation: undefined
-      },
+      "http://localhost:8000/api/organisations/1/departments",
+      depInputMock,
       { headers: { "X-Requested-With": "XMLHttpRequest" } }
     );
   });
 
   it("useUpdateDepartment", async () => {
     let setData, errors;
-    testHook(() => ({ setData, errors } = hooks.useUpdateProjectItem(1, 2)));
+    testHook(() => ({ setData, errors } = hooks.useUpdateDepartment(1)));
     await flushPromises();
-    act(() => setData(projectItemInputMock));
+    act(() => setData(depInputMock));
     await flushPromises();
     expect(axios.patch).toBeCalledWith(
-      "http://localhost:8000/api/organisations/1/projects/1/items/2",
-      {
-        ...projectItemInputMock,
-        active: true,
-        project: 1,
-        // TODO: mock not playing well
-        organisation: undefined
-      },
+      "http://localhost:8000/api/organisations/1/departments/1",
+      depInputMock,
       { headers: { "X-Requested-With": "XMLHttpRequest" } }
     );
   });

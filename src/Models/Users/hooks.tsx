@@ -56,12 +56,15 @@ export const useGetOrganisationUserList = () => {
 
   const userOrganisation = useReadApiData<UserOrganisation[]>({
     url,
-    initialData: {}
+    initialData: []
   });
-  const getUsers = useReadApiData<User[]>({ url, initialData: [] });
+  const getUsers = useReadApiData<User[]>({ url: "", initialData: [] });
 
   // TODO: This endpoint isn't created to handle multiple
   useEffect(() => {
+    if (!userOrganisation.data || !userOrganisation.data.length) {
+      return;
+    }
     const userIds = userOrganisation.data.map(user => user.id).join(",");
     getUsers.performSetUrl(`${url}/?userIds=${userIds}`);
   }, [userOrganisation.data]);
